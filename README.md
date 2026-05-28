@@ -4,15 +4,9 @@ SourceWise Dawah Agent is a source-grounded planning assistant for masjid and MS
 
 The project is intentionally safe-by-default: it does not issue fatwas, it cites the local notes it used, and it includes human review steps before anything is published.
 
-## Demo
+## Quickstart
 
-Screenshot placeholders:
-
-- `docs/screenshots/api-response.png` - FastAPI response with citations.
-- `docs/screenshots/cli-demo.png` - CLI output for a Jumuah reminder.
-- `docs/screenshots/architecture.png` - tool workflow diagram.
-
-Run a local example:
+Run a local example from the command line:
 
 ```bash
 python -m venv .venv
@@ -40,14 +34,14 @@ flowchart LR
     E --> F["Citation-backed brief"]
 ```
 
-## Agent Tools
+## Workflow
 
 - `retrieve_sources`: scores local Markdown source chunks against the request.
 - `build_outline`: turns the strongest chunks into a structured plan.
 - `format_response`: shapes the plan for a khutbah outline, social caption, or study circle.
 - `safety_review`: adds review checks for citations, tone, scope, and community fit.
 
-The default implementation is deterministic so tests and demos run anywhere. The `.env.example` leaves room for an optional `OPENAI_API_KEY` if you want to extend the formatting tool with a hosted model later.
+The included workflow is deterministic so tests and local demos run without outside services. `.env.example` also includes an optional `OPENAI_API_KEY` for experimenting with a hosted formatting step later.
 
 ## API
 
@@ -96,17 +90,15 @@ Environment variables:
 - `SOURCEWISE_DATA_DIR`: optional path to Markdown sources.
 - `OPENAI_API_KEY`: optional future extension; not required for the included agent.
 
-## CI Template
+## Testing
 
-The GitHub Actions workflow template is included at `docs/github-actions/ci.yml`. Move it to `.github/workflows/ci.yml` after authenticating GitHub CLI with the `workflow` scope.
+```bash
+pytest
+```
 
 ## Roadmap
 
 - Admin UI for uploading reviewed source notes.
 - Vector database option with pgvector or Chroma.
-- OpenAI tool-calling formatter behind the deterministic planner.
+- Optional model-backed formatter behind the deterministic planner.
 - Feedback log for reviewers to mark weak citations or tone issues.
-
-## Recruiter Notes
-
-This repo demonstrates RAG architecture, tool orchestration, FastAPI, CLI design, Docker, tests, CI, and careful product thinking around a real community workflow.
