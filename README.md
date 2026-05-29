@@ -36,7 +36,7 @@ flowchart LR
 
 ## Workflow
 
-- `retrieve_sources`: scores local Markdown source chunks against the request.
+- `retrieve_sources`: scores local text notes against the request.
 - `build_outline`: turns the strongest chunks into a structured plan.
 - `format_response`: shapes the plan for a khutbah outline, social caption, or study circle.
 - `safety_review`: adds review checks for citations, tone, scope, and community fit.
@@ -87,7 +87,7 @@ Deploy the Docker image to Render, Fly.io, Railway, or any container host.
 
 Environment variables:
 
-- `SOURCEWISE_DATA_DIR`: optional path to Markdown sources.
+- `SOURCEWISE_DATA_DIR`: optional path to plain-text source notes.
 - `OPENAI_API_KEY`: optional future extension; not required for the included agent.
 
 ## Testing

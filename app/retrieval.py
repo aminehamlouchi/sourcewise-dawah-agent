@@ -43,11 +43,12 @@ def _chunk_body(body: str) -> list[tuple[str, str]]:
     current_lines: list[str] = []
 
     for line in body.splitlines():
-        if line.startswith("## "):
+        stripped = line.strip()
+        if line.startswith("## ") or (stripped.endswith(":") and len(stripped) < 80 and not stripped.startswith("-")):
             if current_lines:
                 chunks.append((current_heading, "\n".join(current_lines).strip()))
                 current_lines = []
-            current_heading = line.replace("## ", "", 1).strip()
+            current_heading = line.replace("## ", "", 1).strip().rstrip(":")
         else:
             current_lines.append(line)
 
@@ -59,11 +60,12 @@ def _chunk_body(body: str) -> list[tuple[str, str]]:
 
 def load_sources(data_dir: Path) -> list[SourceChunk]:
     chunks: list[SourceChunk] = []
-    for path in sorted(data_dir.glob("*.md")):
+    source_paths = sorted([*data_dir.glob("*.txt"), *data_dir.glob("*.md")])
+    for path in source_paths:
         lines = path.read_text(encoding="utf-8").splitlines()
         metadata, body_lines = _parse_metadata(lines)
         title = metadata.get("title", path.stem.replace("-", " ").title())
-        source_id = metadata.get("source_id", path.stem)
+        source_id = metadata.get("source", metadata.get("source_id", path.stem))
         tags = tuple(tag.strip() for tag in metadata.get("tags", "").split(",") if tag.strip())
         body = "\n".join(body_lines)
         for heading, text in _chunk_body(body):

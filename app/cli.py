@@ -36,7 +36,9 @@ def main() -> None:
         print(response.model_dump_json(indent=2))
         return
 
-    print(f"# {response.answer.get('title', request.topic.title())}")
+    title = response.answer.get("title", request.topic.title())
+    print(title)
+    print("=" * len(title))
     print()
     print(response.disclaimer)
     print()
